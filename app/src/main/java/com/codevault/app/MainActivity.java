@@ -26,6 +26,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -99,6 +100,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Feedback Button
+        Button feedbackButton = findViewById(R.id.feedbackButton);
+        feedbackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFeedbackForm();
+            }
+        });
+
         // Inside onCreate method, add this code to set OnClickListener for Reset button
         Button resetButton = findViewById(R.id.resetButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void openFeedbackForm() {
+        String url = "https://zal7mj471qm.typeform.com/to/Vdo3h3M7"; // URL of the feedback form
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
     private void encryptFile() {
         try {
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
