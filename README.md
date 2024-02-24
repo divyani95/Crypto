@@ -2,7 +2,7 @@
 [![Generic badge](https://img.shields.io/badge/language-java-<Brown>.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/algorithm-AES256-<Yellow>.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/ide-AndroidStudio-<Red>.svg)](https://shields.io/)
-[![Generic badge](https://img.shields.io/badge/downloads-56-<Blue>.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/downloads-56-Blue.svg)](https://shields.io/)
 
 Crypto - Android App
 Crypto is an Android application developed using Android Studio that provides encryption and decryption of text using the AES256 algorithm and a secret key. This app allows users to securely store and share sensitive information by encoding it into AES256 format with a secret key.
