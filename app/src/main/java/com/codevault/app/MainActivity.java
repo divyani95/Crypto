@@ -1,20 +1,24 @@
 package com.codevault.app;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,9 +28,9 @@ import java.security.Key;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
 import android.util.Base64;
-import android.view.View;
-import android.widget.Button;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -149,6 +153,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     private void encryptFile() {
+        // Show a dialog to get the password from the user
+        showPasswordDialog(true);
+    }
+
+    private void decryptFile() {
+        // Show a dialog to get the password from the user
+        showPasswordDialog(false);
+    }
+    private void performEncryption() {
         try {
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
             byte[] fileData = getBytesFromInputStream(inputStream);
@@ -164,7 +177,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void decryptFile() {
+    private void showPasswordDialog(final boolean isEncrypt) {
+        final EditText passwordEditText = new EditText(this);
+        passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Password");
+        builder.setView(passwordEditText);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String password = passwordEditText.getText().toString();
+                if ("1234".equals(password)) {
+                    if (isEncrypt) {
+                        performEncryption();
+                    } else {
+                        performDecryption();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void performDecryption() {
         try {
             String encryptedFileData = text2TextView.getText().toString();
             String key = "thisisaverysecurekeyfour"; // 16, 24, or 32 bytes
